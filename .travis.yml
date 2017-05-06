@@ -4,15 +4,15 @@ install: mvn clean install --quiet -DskipTests=true
 
 script: mvn clean test -P integration-tests
 
-after_success: mvn cobertura:cobertura coveralls:cobertura
-
 notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/61d61757ee57d30e343b
-    on_success: change
-    on_failure: always
-    on_start: falsebefore_install:
+ email: false
+  slack:
+    rooms: flakycov:U2MeVOPjdi4up1U793ubeIUZ
+    template:
+    - Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} by %{author} %{result} in %{duration}
+    - 'dashbot: %{repository_name} %{build_id}'
+
+before_install:
   - wget https://dl.dropboxusercontent.com/u/7897865/apache-maven-3.3.9.zip
   - unzip -qq apache-maven-3.3.9.zip
   - export M2_HOME=$PWD/apache-maven-3.3.9
